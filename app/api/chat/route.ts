@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
 
@@ -185,13 +185,18 @@ export async function POST(req: NextRequest) {
 
   // Fire-and-forget: log to Supabase (never blocks the response)
   const question = userMessages.filter(m => m.role === 'user').at(-1)?.content ?? '';
-  supabase.from('kai_conversations').insert({
-    question,
-    answer: reply,
-    visitor_ip: req.headers.get('x-forwarded-for') ?? null,
-  }).then(({ error }) => {
-    if (error) console.error('[Supabase log error]', error.message);
-  });
+  const supabase = getSupabaseClient();
+  if (supabase) {
+    void supabase.from('kai_conversations').insert({
+      question,
+      answer: reply,
+      visitor_ip: req.headers.get('x-forwarded-for') ?? null,
+    }).then(({ error }) => {
+      if (error) console.error('[Supabase log error]', error.message);
+    }).catch((error: unknown) => {
+      console.error('[Supabase log error]', error);
+    });
+  }
 
   return NextResponse.json({ reply });
 }
