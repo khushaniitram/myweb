@@ -1,6 +1,23 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
-let client: ReturnType<typeof createClient> | null | undefined;
+type Database = {
+  public: {
+    Tables: {
+      kai_conversations: {
+        Row: { question: string; answer: string; visitor_ip: string | null };
+        Insert: { question: string; answer: string; visitor_ip: string | null };
+        Update: Partial<{ question: string; answer: string; visitor_ip: string | null }>;
+        Relationships: [];
+      };
+    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
+  };
+};
+
+let client: SupabaseClient<Database> | null | undefined;
 
 export function getSupabaseClient() {
   if (client !== undefined) return client;
@@ -10,6 +27,6 @@ export function getSupabaseClient() {
 
   // Supabase logging is optional; don't make builds fail when these vars
   // aren't configured in an environment such as a preview deployment.
-  client = url && anonKey ? createClient(url, anonKey) : null;
+  client = url && anonKey ? createClient<Database>(url, anonKey) : null;
   return client;
 }

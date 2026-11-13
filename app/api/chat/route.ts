@@ -193,8 +193,6 @@ export async function POST(req: NextRequest) {
       visitor_ip: req.headers.get('x-forwarded-for') ?? null,
     }).then(({ error }) => {
       if (error) console.error('[Supabase log error]', error.message);
-    }).catch((error: unknown) => {
-      console.error('[Supabase log error]', error);
     });
   }
 
