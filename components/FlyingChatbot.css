@@ -1,0 +1,491 @@
+.flying-chatbot-container {
+  --fly-bg: #ffffff;
+  --fly-ink: #1d1d1f;
+  --fly-pod: #e5e5ea;
+  --fly-glow: #8ec5ff;
+  --fly-thrust: 0;
+  --fly-scale: 1.35;
+  --chat-w: 720px;
+  --chat-h: 405px;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  overflow: hidden;
+  isolation: isolate;
+  user-select: none;
+}
+
+.flying-chatbot-container[data-carry] {
+  cursor: none;
+}
+
+.flying-chatbot-container[data-dragging]:not([data-carry]) {
+  cursor: grabbing;
+}
+
+.flying-chatbot__smoke {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 16:9 Chatbot Craft Chassis (720px x 405px - 50% larger) */
+.flying-chatbot__craft {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: var(--chat-w);
+  height: var(--chat-h);
+  aspect-ratio: 16 / 9;
+  border-radius: 26px;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  visibility: hidden;
+  touch-action: none;
+}
+
+.flying-chatbot-container[data-ready] .flying-chatbot__craft {
+  visibility: visible;
+}
+
+.flying-chatbot-container[data-trigger='hover'] .flying-chatbot__craft {
+  cursor: default;
+}
+
+/* Clean White Apple Minimalist Window */
+.flying-chatbot__window {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(40px) saturate(190%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  color: #1d1d1f;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 
+    0 30px 80px -15px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 calc(var(--fly-thrust) * 25px) calc(var(--fly-thrust) * 45px) -5px color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 75%), transparent);
+  transition: box-shadow 0.15s ease-out;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Bottom Glow line responding to thrusters */
+.flying-chatbot__bottom-glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg, 
+    transparent 10%, 
+    color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 100%), transparent) 25%, 
+    color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 100%), transparent) 75%, 
+    transparent 90%
+  );
+  filter: blur(1px);
+  pointer-events: none;
+  opacity: calc(var(--fly-thrust) * 1.3);
+  transition: opacity 0.1s ease;
+}
+
+/* Apple Header */
+.flying-chatbot__header {
+  height: 48px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.75);
+  cursor: grab;
+  user-select: none;
+}
+
+.flying-chatbot-container[data-dragging] .flying-chatbot__header {
+  cursor: grabbing;
+}
+
+.flying-chatbot__header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.flying-chatbot__dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.flying-chatbot__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(0, 0, 0, 0.12);
+}
+
+.flying-chatbot__dot--red { background: #ff5f56; }
+.flying-chatbot__dot--yellow { background: #ffbd2e; }
+.flying-chatbot__dot--green { background: #27c93f; }
+
+.flying-chatbot__title-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+
+.flying-chatbot__status-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.flying-chatbot__status-pill.flying {
+  background: rgba(0, 113, 227, 0.1);
+  color: #0071e3;
+  border: 1px solid rgba(0, 113, 227, 0.25);
+}
+
+.flying-chatbot__pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.flying-chatbot__header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flying-chatbot__btn-flight {
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.04);
+  color: #1d1d1f;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.flying-chatbot__btn-flight:hover {
+  background: rgba(0, 0, 0, 0.08);
+  transform: translateY(-0.5px);
+}
+
+/* Chat Messages Viewport */
+.flying-chatbot__messages {
+  flex: 1;
+  padding: 14px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  user-select: text;
+  cursor: default;
+}
+
+.flying-chatbot__messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.flying-chatbot__messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.flying-chatbot__messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.flying-chatbot__msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.flying-chatbot__msg--bot {
+  align-self: flex-start;
+}
+
+.flying-chatbot__msg--user {
+  align-self: flex-end;
+}
+
+.flying-chatbot__msg-bubble {
+  padding: 9px 15px;
+  border-radius: 18px;
+  word-break: break-word;
+}
+
+.flying-chatbot__msg--bot .flying-chatbot__msg-bubble {
+  background: #f2f2f7;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  color: #1d1d1f;
+}
+
+.flying-chatbot__msg--user .flying-chatbot__msg-bubble {
+  background: #0071e3;
+  color: #ffffff;
+}
+
+.flying-chatbot__quick-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 20px 8px 20px;
+}
+
+.flying-chatbot__chip {
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  color: #1d1d1f;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.flying-chatbot__chip:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.16);
+  transform: translateY(-0.5px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Chat Input Bar */
+.flying-chatbot__input-bar {
+  height: 56px;
+  padding: 8px 18px 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.flying-chatbot__input-field {
+  flex: 1;
+  height: 38px;
+  padding: 0 16px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f5f5f7;
+  color: #1d1d1f;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.flying-chatbot__input-field:focus {
+  border-color: #0071e3;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+}
+
+.flying-chatbot__input-field::placeholder {
+  color: #86868b;
+}
+
+.flying-chatbot__btn-send {
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+  border: none;
+  background: #0071e3;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.flying-chatbot__btn-send:hover {
+  background: #0077ed;
+  transform: scale(1.05);
+}
+
+.flying-chatbot__btn-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Brushed Silver Aluminum Thruster Pods (Apple Hardware Finish) */
+.flying-chatbot__pod {
+  position: absolute;
+  top: calc(100% - 2px);
+  width: calc(26px * var(--fly-scale));
+  height: calc(16px * var(--fly-scale));
+  border-radius: 3px 3px 10px 10px;
+  background: linear-gradient(180deg, #f2f2f7 0%, #c7c7cc 100%);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-top: none;
+  transform: translateX(-50%);
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Gimbal bracket ring on pod */
+.flying-chatbot__pod::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 1px;
+}
+
+/* Glowing Electric Blue Rocket Nozzle */
+.flying-chatbot__pod::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(14px * var(--fly-scale));
+  height: calc(5px * var(--fly-scale));
+  border-radius: 2px;
+  transform: translateX(-50%);
+  background: color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 100%), #8e8e93);
+  box-shadow: 
+    0 1px 8px color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 100%), transparent),
+    0 3px 18px color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 90%), transparent);
+  transition: background 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* Clean, responsive assistant surface */
+.flying-chatbot-container {
+  min-height: 0;
+  user-select: text;
+}
+.flying-chatbot__craft {
+  width: min(var(--chat-w), calc(100vw - 32px));
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 22px;
+}
+.flying-chatbot__window {
+  border: 1px solid #e5e5ea;
+  border-radius: 22px;
+  background: #fff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: #1d1d1f;
+  box-shadow:
+    0 22px 54px rgba(29, 29, 31, .12),
+    0 2px 8px rgba(29, 29, 31, .06),
+    0 calc(var(--fly-thrust) * 14px) calc(var(--fly-thrust) * 26px) -8px color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 45%), transparent);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+}
+.flying-chatbot__header {
+  height: 58px;
+  padding: 0 22px;
+  border-bottom: 1px solid #ededf0;
+  background: #fff;
+}
+.flying-chatbot__dots { display: none; }
+.flying-chatbot__header-left { gap: 0; }
+.flying-chatbot__title-badge { font-size: 15px; font-weight: 600; }
+.flying-chatbot__messages { padding: 20px 24px; gap: 12px; }
+.flying-chatbot__msg { font-size: 14px; line-height: 1.55; }
+.flying-chatbot__msg-bubble { padding: 10px 15px; border-radius: 17px; }
+.flying-chatbot__msg--bot .flying-chatbot__msg-bubble {
+  border: 0;
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+.flying-chatbot__msg--user .flying-chatbot__msg-bubble { background: #0071e3; color: #fff; }
+.flying-chatbot__input-bar {
+  height: 64px;
+  padding: 10px 18px;
+  border-top: 1px solid #ededf0;
+  background: #fff;
+}
+.flying-chatbot__input-field {
+  height: 42px;
+  padding: 0 15px;
+  border: 1px solid #d2d2d7;
+  border-radius: 13px;
+  background: #fff;
+  color: #1d1d1f;
+  font: inherit;
+  font-size: 14px;
+}
+.flying-chatbot__input-field:focus {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, .12);
+}
+.flying-chatbot__input-field::placeholder { color: #86868b; }
+.flying-chatbot__btn-send {
+  width: 40px;
+  height: 40px;
+  background: #0071e3;
+  transition: background .18s ease, transform .18s ease;
+}
+.flying-chatbot__btn-send:hover { background: #0077ed; transform: translateY(-1px); }
+.flying-chatbot__bottom-glow { height: 1px; filter: none; }
+.flying-chatbot__pod {
+  border-color: #d2d2d7;
+  background: #e5e5ea;
+  box-shadow: 0 4px 10px rgba(29, 29, 31, .13);
+}
+.flying-chatbot__pod::before { background: rgba(255, 255, 255, .9); }
+
+@media (max-width: 700px) {
+  .flying-chatbot__craft { width: min(var(--chat-w), calc(100vw - 28px)); border-radius: 17px; }
+  .flying-chatbot__window { border-radius: 17px; }
+  .flying-chatbot__header { height: 48px; padding-inline: 16px; }
+  .flying-chatbot__messages { padding: 13px 15px; gap: 8px; }
+  .flying-chatbot__msg { font-size: 12px; }
+  .flying-chatbot__msg-bubble { padding: 8px 11px; }
+  .flying-chatbot__input-bar { height: 56px; padding: 8px 10px; gap: 7px; }
+  .flying-chatbot__input-field { height: 38px; min-width: 0; font-size: 12px; }
+  .flying-chatbot__btn-send { width: 36px; height: 36px; }
+}
+
