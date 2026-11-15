@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import PageShell from '@/components/PageShell';
-import { ArrowUpRight, Briefcase, Award, CheckCircle2, Calendar, MapPin, Activity, Video } from 'lucide-react';
+import { ArrowUpRight, Briefcase, Award, CheckCircle2, Calendar, MapPin, Activity, Video, ExternalLink, X } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ExperiencePage() {
+  const [certModalOpen, setCertModalOpen] = useState(false);
+
   return (
     <PageShell>
       <div className="mx-auto w-full max-w-[1080px] px-6 sm:px-8">
@@ -96,6 +99,59 @@ export default function ExperiencePage() {
                   </span>
                 </li>
               </ul>
+            </div>
+
+            {/* Verified Internship Certificate Card */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#86868b]">
+                  <Award className="w-3.5 h-3.5 text-[#0071e3]" />
+                  <span>Verified Credentials · Internship Certificate</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setCertModalOpen(true)}
+                  className="text-xs font-mono text-[#0071e3] hover:text-[#0077ed] inline-flex items-center gap-1 font-medium cursor-pointer"
+                >
+                  <span>Expand Certificate</span>
+                  <ExternalLink className="w-3 h-3" />
+                </button>
+              </div>
+
+              <div
+                onClick={() => setCertModalOpen(true)}
+                className="group relative cursor-pointer rounded-2xl border border-[#e5e5ea] bg-[#fbfbfd] p-4 sm:p-5 hover:border-[#0071e3]/40 hover:shadow-md transition-all flex flex-col md:flex-row items-center gap-6"
+              >
+                <div className="relative w-full md:w-64 aspect-[4/3] rounded-xl overflow-hidden border border-[#e5e5ea] bg-white shadow-sm flex-shrink-0 group-hover:scale-[1.02] transition-transform">
+                  <img
+                    src="/images/interncerti.jpeg"
+                    alt="Intentio Biopsy Device Internship Certificate - Khushan Borse"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-mono font-medium gap-1.5 backdrop-blur-[2px]">
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Click to View Full Certificate</span>
+                  </div>
+                </div>
+
+                <div className="flex-1 w-full">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-[11px] font-mono font-medium mb-2">
+                    <CheckCircle2 className="w-3 h-3" />
+                    Verified Completion
+                  </div>
+                  <h4 className="text-base sm:text-lg font-semibold text-[#1d1d1f] mb-1 group-hover:text-[#0071e3] transition-colors">
+                    Summer Research Internship Certificate
+                  </h4>
+                  <p className="text-xs text-[#6e6e73] leading-relaxed mb-3">
+                    Awarded for contributions to CNN-based bone tumor detection, dataset normalization, and AR4 teleoperation robotics at Intentio Biopsy Device Pvt. Ltd. (May 2026 – July 2026).
+                  </p>
+                  <div className="text-xs font-mono text-[#86868b] flex items-center gap-2">
+                    <span>Issued: July 2026</span>
+                    <span>·</span>
+                    <span>Candidate: Khushan Borse</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Video Demonstrations (Portrait Mode, No Audio) */}
@@ -190,7 +246,7 @@ export default function ExperiencePage() {
                     Student Governance
                   </span>
                   <span className="text-xs font-mono text-[#86868b]">
-                    2024 – PRESENT
+                    2026 – PRESENT
                   </span>
                 </div>
                 <h3 className="text-xl font-semibold text-[#1d1d1f] tracking-tight mb-1">
@@ -216,7 +272,7 @@ export default function ExperiencePage() {
                     Technical Mentorship
                   </span>
                   <span className="text-xs font-mono text-[#86868b]">
-                    2024 – PRESENT
+                    2025 – PRESENT
                   </span>
                 </div>
                 <h3 className="text-xl font-semibold text-[#1d1d1f] tracking-tight mb-1">
@@ -253,6 +309,59 @@ export default function ExperiencePage() {
           </Link>
         </nav>
       </div>
+
+      {/* Certificate Lightbox Modal */}
+      {certModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
+          onClick={() => setCertModalOpen(false)}
+        >
+          <div
+            className="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-6 border border-white/20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#e5e5ea]">
+              <div>
+                <h3 className="text-base sm:text-lg font-semibold text-[#1d1d1f]">
+                  Intentio Biopsy Device Pvt. Ltd. — Internship Certificate
+                </h3>
+                <p className="text-xs font-mono text-[#6e6e73]">
+                  May 2026 – July 2026 · AI/ML Summer Research Intern
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href="/images/interncerti.jpeg"
+                  target="_blank"
+                  rel="noreferrer"
+                  download="Khushan_Borse_Internship_Certificate.jpeg"
+                  className="p-2 rounded-full bg-[#f5f5f7] hover:bg-[#e5e5ea] text-[#1d1d1f] transition-colors"
+                  title="Open Original Image"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setCertModalOpen(false)}
+                  className="p-2 rounded-full bg-[#f5f5f7] hover:bg-[#e5e5ea] text-[#1d1d1f] transition-colors cursor-pointer"
+                  title="Close Modal"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div className="max-h-[75vh] overflow-auto rounded-xl flex items-center justify-center bg-[#fbfbfd]">
+              <img
+                src="/images/interncerti.jpeg"
+                alt="Intentio Biopsy Device Internship Certificate - Khushan Borse"
+                className="w-full h-auto object-contain rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </PageShell>
   );
 }

@@ -2,14 +2,46 @@
 
 import PageShell from '@/components/PageShell';
 import GithubIcon from '@/components/icons/GithubIcon';
-import { ArrowUpRight, FolderGit2, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, FolderGit2, CheckCircle2, FileText } from 'lucide-react';
 import Link from 'next/link';
 
-const PROJECTS = [
+interface Project {
+  index: string;
+  title: string;
+  domain: string;
+  description: string;
+  metrics: { label: string; value: string }[];
+  details: string[];
+  technologies: string[];
+  github?: string;
+  statusBadge?: string;
+}
+
+const PROJECTS: Project[] = [
   {
     index: '01',
+    title: 'ScoutSeg: Ultra-Low-Power Edge Semantic Segmentation on Microprocessors and Microcontrollers via Dynamic Patch-Gated Micro-Refinement',
+    domain: 'Edge AI · TinyML · Semantic Segmentation · ESP32 · Model Optimization · INT4 Quantization',
+    description:
+      'Designed a lightweight, dynamic patch-gated semantic segmentation architecture for resource-constrained microcontrollers, combining low-cost scouting with selective high-resolution refinement.',
+    metrics: [
+      { label: 'Inference Speed', value: '9.8 FPS' },
+      { label: 'SRAM Footprint', value: '24.5 KB' },
+      { label: 'Optimization', value: '58% FLOPs Reduction (INT4)' },
+    ],
+    details: [
+      'Designed a lightweight, dynamic patch-gated semantic segmentation architecture for resource-constrained microcontrollers, combining low-cost scouting with selective high-resolution refinement.',
+      'Implemented a two-stage inference pipeline on the ESP32-D0WD-V3 (240 MHz), processing 128×160 images using 32×32 patches and dynamic Top-K selection.',
+      'Optimized on-device inference through INT4 weight packing, selective patch refinement, and early-exit mechanisms, achieving 58% FLOPs reduction.',
+      'Achieved 9.8 FPS inference with a 24.5 KB SRAM arena, demonstrating efficient semantic segmentation under strict memory and computational constraints.',
+    ],
+    technologies: ['Edge AI', 'TinyML', 'Semantic Segmentation', 'ESP32', 'INT4 Quantization', 'Model Optimization'],
+    statusBadge: 'Research Paper in Preparation',
+  },
+  {
+    index: '02',
     title: 'Satellite Semantic Segmentation',
-    domain: 'Computer Vision · Deep Learning',
+    domain: 'Computer Vision · Deep Learning · Image Processing',
     description:
       'Encoder-decoder segmentation pipeline featuring a custom boundary fusion module engineered for pixel-level classification of high-resolution satellite imagery.',
     metrics: [
@@ -20,14 +52,15 @@ const PROJECTS = [
     details: [
       'Engineered multi-scale semantic feature fusion coupled with boundary information to preserve fine-grained land cover details and minimize edge distortion.',
       'Benchmarked against standard UNet baselines, demonstrating significant spatial delineation improvements across fragmented terrain classes.',
+      'Evaluated segmentation performance using mean IoU and Dice score on LandCoverNet / DeepGlobe Land Cover dataset, achieving 84.6% mean IoU and an 89.2% Dice score.',
     ],
     technologies: ['PyTorch', 'Computer Vision', 'Segmentation', 'Boundary Fusion', 'DeepGlobe'],
-    github: 'https://github.com/khushaniitram',
+    github: 'https://github.com/khushaniitram/satellitesegmentation',
   },
   {
-    index: '02',
+    index: '03',
     title: 'Qwen LLM Fine-Tuning',
-    domain: 'Natural Language Processing · PEFT',
+    domain: 'Natural Language Processing · LLMs · LoRA · Unsloth · PyTorch',
     description:
       'Parameter-efficient supervised fine-tuning of the Qwen2.5-1.5B Instruct language model utilizing Low-Rank Adaptation (LoRA) and the Unsloth acceleration kernel.',
     metrics: [
@@ -36,16 +69,16 @@ const PROJECTS = [
       { label: 'Kernel Framework', value: 'Unsloth & PyTorch' },
     ],
     details: [
-      'Curated task-specific instruction prompt-response pairs to specialize reasoning behavior while eliminating memory bottlenecks during backpropagation.',
-      'Evaluated response coherence and loss trajectory across held-out test splits, verifying domain adaptation fidelity without catastrophic forgetting.',
+      'Fine-tuned the Qwen2.5-1.5B Instruct language model using supervised fine tuning (SFT), Low Rank Adaptation (LoRA), and the Unsloth framework.',
+      'Configured parameter efficient training with LoRA rank 16, alpha 32, and dropout 0.05, using a task-specific instruction dataset with prompt response examples.',
+      'Evaluated model responses on a held-out test set using task-specific metrics and validation loss to assess adaptation quality.',
     ],
     technologies: ['Qwen 2.5', 'LoRA', 'PEFT', 'Unsloth', 'PyTorch', 'Instruction Tuning'],
-    github: 'https://github.com/khushaniitram',
   },
   {
-    index: '03',
+    index: '04',
     title: 'Language Model from Scratch',
-    domain: 'Neural Architecture · Foundations',
+    domain: 'Natural Language Processing · Neural Architecture · Foundations',
     description:
       'Character-level autoregressive neural language model constructed entirely from scratch in PyTorch without high-level library abstractions.',
     metrics: [
@@ -58,7 +91,7 @@ const PROJECTS = [
       'Engineered text generation via autoregressive probabilistic character sampling with tunable temperature scaling.',
     ],
     technologies: ['PyTorch', 'Tokenization', 'Neural Networks', 'Cross-Entropy', 'Autoregressive'],
-    github: 'https://github.com/khushaniitram',
+    github: 'https://github.com/thekhushan/Small_language_model',
   },
 ];
 
@@ -76,7 +109,7 @@ export default function ProjectsPage() {
             Featured Projects
           </h1>
           <p className="text-lg sm:text-xl text-[#6e6e73] font-normal tracking-tight max-w-2xl mx-auto leading-relaxed">
-            Architectures in computer vision, parameter-efficient language models, and foundational deep learning.
+            Architectures in edge computing, computer vision, parameter-efficient language models, and foundational deep learning.
           </p>
         </header>
 
@@ -87,7 +120,7 @@ export default function ProjectsPage() {
               key={project.title}
               className="bg-white rounded-3xl p-7 sm:p-9 lg:p-10 border border-[#e5e5ea] shadow-sm hover:shadow-md hover:border-[#0071e3]/30 transition-all duration-300"
             >
-              {/* Top Row: Index, Domain & GitHub Link */}
+              {/* Top Row: Index, Domain & Action Button */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-5 border-b border-[#f2f2f7]">
                 <div className="flex items-center gap-3">
                   <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#0071e3]/10 text-[#0071e3] text-xs font-mono font-semibold">
@@ -98,16 +131,23 @@ export default function ProjectsPage() {
                   </span>
                 </div>
 
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#f5f5f7] hover:bg-[#e5e5ea] text-xs font-medium text-[#1d1d1f] transition-colors self-start sm:self-auto"
-                >
-                  <GithubIcon size={14} className="w-3.5 h-3.5" />
-                  <span>View Repository</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-[#86868b]" />
-                </a>
+                {project.statusBadge ? (
+                  <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0071e3]/10 text-xs font-mono font-medium text-[#0071e3] border border-[#0071e3]/20 self-start sm:self-auto">
+                    <FileText className="w-3.5 h-3.5 text-[#0071e3]" />
+                    <span>{project.statusBadge}</span>
+                  </span>
+                ) : project.github ? (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#f5f5f7] hover:bg-[#e5e5ea] text-xs font-medium text-[#1d1d1f] transition-colors self-start sm:self-auto"
+                  >
+                    <GithubIcon size={14} className="w-3.5 h-3.5" />
+                    <span>View Repository</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#86868b]" />
+                  </a>
+                ) : null}
               </div>
 
               {/* Title & Description */}

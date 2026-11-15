@@ -9,6 +9,12 @@ type Database = {
         Update: Partial<{ question: string; answer: string; visitor_ip: string | null }>;
         Relationships: [];
       };
+      contact_messages: {
+        Row: { name: string; email: string; message: string; visitor_ip: string | null };
+        Insert: { name: string; email: string; message: string; visitor_ip: string | null };
+        Update: Partial<{ name: string; email: string; message: string; visitor_ip: string | null }>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

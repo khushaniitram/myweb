@@ -60,19 +60,19 @@ export default function AboutPage() {
             Building practical, high-efficiency intelligence.
           </h2>
           <p className="text-base text-[#424245] leading-relaxed font-normal mb-8">
-            Computer Science undergraduate with practical experience in deep learning, satellite imagery analysis, and language model fine-tuning. Dedicated to building computationally efficient machine learning systems with real-world impact.
+            Computer Science undergraduate with experience in machine learning, computer vision, and deep learning. Built projects involving edge semantic segmentation on microcontrollers (ESP32), satellite image segmentation, LLM fine-tuning, and neural language modeling using PyTorch. Interested in efficient AI systems and practical ML applications.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-[#f2f2f7]">
             <div className="p-4 rounded-2xl bg-[#fbfbfd] border border-[#e5e5ea]/70">
-              <div className="text-xs font-mono text-[#0071e3] font-semibold mb-1">01 / VISION</div>
-              <div className="text-sm font-semibold text-[#1d1d1f] mb-1">Pixel-Level Segmentation</div>
-              <div className="text-xs text-[#6e6e73] leading-relaxed">Custom boundary fusion for fine-grained spatial land cover delineation.</div>
+              <div className="text-xs font-mono text-[#0071e3] font-semibold mb-1">01 / EDGE AI & VISION</div>
+              <div className="text-sm font-semibold text-[#1d1d1f] mb-1">Edge Segmentation</div>
+              <div className="text-xs text-[#6e6e73] leading-relaxed">Dynamic patch-gated inference & boundary fusion (ESP32, INT4, 9.8 FPS).</div>
             </div>
             <div className="p-4 rounded-2xl bg-[#fbfbfd] border border-[#e5e5ea]/70">
-              <div className="text-xs font-mono text-[#0071e3] font-semibold mb-1">02 / LLM</div>
-              <div className="text-sm font-semibold text-[#1d1d1f] mb-1">PEFT & LoRA Tuning</div>
-              <div className="text-xs text-[#6e6e73] leading-relaxed">Accelerated instruction tuning on Qwen 2.5 with reduced VRAM footprint.</div>
+              <div className="text-xs font-mono text-[#0071e3] font-semibold mb-1">02 / LLM & PEFT</div>
+              <div className="text-sm font-semibold text-[#1d1d1f] mb-1">Efficient Fine-Tuning</div>
+              <div className="text-xs text-[#6e6e73] leading-relaxed">Accelerated instruction tuning on Qwen 2.5 with LoRA and Unsloth kernels.</div>
             </div>
             <div className="p-4 rounded-2xl bg-[#fbfbfd] border border-[#e5e5ea]/70">
               <div className="text-xs font-mono text-[#0071e3] font-semibold mb-1">03 / FOUNDATIONS</div>
