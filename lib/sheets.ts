@@ -18,7 +18,9 @@ export async function logToGoogleSheet(payload: {
 }) {
   const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
   if (!webhookUrl) {
-    // If webhook is not configured yet, skip silently in production
+    console.warn(
+      `[Google Sheets Logger] GOOGLE_SHEET_WEBHOOK_URL is not configured. Event (${payload.type}) not synced to Google Sheets. See google-sheets-script.js for 1-click deployment instructions.`
+    );
     return;
   }
 

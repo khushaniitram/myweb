@@ -122,7 +122,7 @@ export default function ExperiencePage() {
                 onClick={() => setCertModalOpen(true)}
                 className="group relative cursor-pointer rounded-2xl border border-[#e5e5ea] bg-[#fbfbfd] p-4 sm:p-5 hover:border-[#0071e3]/40 hover:shadow-md transition-all flex flex-col md:flex-row items-center gap-6"
               >
-                <div className="relative w-full md:w-64 aspect-[4/3] rounded-xl overflow-hidden border border-[#e5e5ea] bg-white shadow-sm flex-shrink-0 group-hover:scale-[1.02] transition-transform">
+                <div className="relative w-full md:w-56 aspect-[3/4] rounded-xl overflow-hidden border border-[#e5e5ea] bg-white shadow-sm flex-shrink-0 group-hover:scale-[1.02] transition-transform">
                   <img
                     src="/images/interncerti.jpeg"
                     alt="Intentio Biopsy Device Internship Certificate - Khushan Borse"

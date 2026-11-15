@@ -4,7 +4,7 @@
  * Target Google Spreadsheet:
  * https://docs.google.com/spreadsheets/d/1cmL6W37NnF1EtxKoLYrZ43SPAQOgcT7K0TC1lCU9LWQ/edit?usp=sharing
  * 
- * SETUP INSTRUCTIONS:
+ * SETUP INSTRUCTIONS (Takes ~1 minute):
  * 1. Open your Google Sheet in your browser:
  *    https://docs.google.com/spreadsheets/d/1cmL6W37NnF1EtxKoLYrZ43SPAQOgcT7K0TC1lCU9LWQ/edit
  * 2. In the top navigation bar, click: Extensions → Apps Script.
@@ -16,16 +16,27 @@
  *    - Description: Portfolio Logger
  *    - Execute as: Me (your Google account)
  *    - Who has access: Anyone
- * 8. Click "Deploy". Authorize permissions when prompted.
- * 9. Copy the generated Web App URL (e.g., https://script.google.com/macros/s/.../exec).
- * 10. Add it to your .env.local and Vercel Environment Variables:
+ * 8. Click "Deploy". When prompted, click "Authorize access", choose your Google account, click "Advanced" → "Go to Untitled project (unsafe)", and click "Allow".
+ * 9. Copy the generated Web App URL (starts with https://script.google.com/macros/s/.../exec).
+ * 10. Add it to your .env.local file:
  *     GOOGLE_SHEET_WEBHOOK_URL=https://script.google.com/macros/s/.../exec
+ *     And add it to your Vercel Project Settings → Environment Variables.
  */
 
 function doPost(e) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var data = JSON.parse(e.postData.contents);
+    var data = {};
+    if (e && e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (pErr) {
+        data = e.parameter || {};
+      }
+    } else if (e && e.parameter) {
+      data = e.parameter;
+    }
+
     var timestamp = new Date();
 
     // 1. Log Contact Form Submissions
